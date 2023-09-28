@@ -11,16 +11,13 @@ const Home = () => {
 
   const getTask = async () => {
     try {
-      let response = await fetch(urlBase);
-      let data = await response.json();
+      let resp = await fetch(urlBase);
+      let data = await resp.json();
 
-      console.log(response);
-      console.log(data);
-
-      if (response.ok) {
+      if (resp.ok) {
         setTodos(data);
       }
-      if (response.status === 404) {
+      if (resp.status === 404) {
         createUser();
       }
     } catch (error) {
@@ -30,7 +27,7 @@ const Home = () => {
 
   const createUser = async () => {
     try {
-      let response = await fetch(urlBase, {
+      let resp = await fetch(urlBase, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -38,7 +35,7 @@ const Home = () => {
         body: JSON.stringify([]),
       });
 
-      if (response.ok) {
+      if (resp.ok) {
         getTask();
       }
       console.log("User created successfully");
@@ -59,7 +56,7 @@ const Home = () => {
     const updatedTasks = todos.filter((_, currentIndex) => index !== currentIndex);
     
     try {
-      let response = await fetch(urlBase, {
+      let resp = await fetch(urlBase, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -67,7 +64,7 @@ const Home = () => {
         body: JSON.stringify(updatedTasks),
       });
       
-      if (response.ok) {
+      if (resp.ok) {
         getTask();
       } else {
         console.log("Failed to delete task.");
@@ -79,13 +76,13 @@ const Home = () => {
 
   async function deleteAll(){
     try {
-      let response = await fetch (urlBase, {
+      let resp = await fetch (urlBase, {
         method: "DELETE",
         headers:{
           "Content-Type": "aplication/json"
         }
       })
-      if (response.ok){
+      if (resp.ok){
         getTask()
       }
       console.log(error)
@@ -110,14 +107,14 @@ const Home = () => {
             onKeyPress={async (e) => {
               if (e.key === "Enter") {
                 try {
-                  let response = await fetch(urlBase, {
+                  let resp = await fetch(urlBase, {
                     method: "PUT",
                     headers: {
                       "Content-Type": "application/json",
                     },
                     body: JSON.stringify([...todos, { label: inputValue, done: false }]),
                   });
-                  if (response.ok) {
+                  if (resp.ok) {
                     getTask();
                     setInputValue("");
                   }
